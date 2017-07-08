@@ -30,6 +30,12 @@
 // SCE_KERNEL_POWER_TICK_DISABLE_OLED_OFF - Cancel OLED-off timer
 // SCE_KERNEL_POWER_TICK_DISABLE_OLED_DIMMING -  Cancel OLED dimming timer
 
+
+/*
+	TODO: register a suspend callback that calls the sceKernelPowerTick function
+	Suggestion by @xerpi
+*/
+
 int nosleep_thread(SceSize args, void *argp) {
 	// this is really dirty, but it works
 	while (1) {
