@@ -21,11 +21,11 @@ link_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-add_executable(nosleep
+add_executable(nosleep.elf
   main.c
 )
 
-target_link_libraries(nosleep
+target_link_libraries(nosleep.elf
   SceLibKernel_stub
   SceThreadmgrForDriver_stub
   SceIofilemgrForDriver_stub
@@ -33,10 +33,18 @@ target_link_libraries(nosleep
   gcc
 )
 
-set_target_properties(nosleep
-  PROPERTIES LINK_FLAGS "-nostdlib"
+set_target_properties(nosleep.elf
+	PROPERTIES LINK_FLAGS "-nostdlib"
+	COMPILE_FLAGS "-D__VITA_KERNEL__"
 )
 
-vita_create_self(nosleep.skprx nosleep
-  CONFIG ${CMAKE_SOURCE_DIR}/nosleep.yml
+add_custom_target(nosleep.skprx ALL
+	COMMAND vita-elf-create -e ${CMAKE_SOURCE_DIR}/nosleep.yml nosleep.elf nosleep.velf ${CMAKE_SOURCE_DIR}/taihen.json
+	COMMAND vita-make-fself -c nosleep.velf nosleep.skprx
+)
+add_dependencies(nosleep.skprx nosleep.elf)
+
+add_custom_target(send
+	COMMAND curl -T nosleep.skprx ftp://$(PSVITAIP):1337/ux0:/tai/
+	DEPENDS nosleep.skprx
 )

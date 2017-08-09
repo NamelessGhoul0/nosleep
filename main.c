@@ -22,7 +22,6 @@
 
 #include <psp2kern/kernel/suspend.h>
 #include <psp2kern/kernel/threadmgr.h>
-#include <psp2kern/kernel/processmgr.h>
 #include <psp2kern/kernel/modulemgr.h>
 
 // SCE_KERNEL_POWER_TICK_DEFAULT - Cancel all timers
